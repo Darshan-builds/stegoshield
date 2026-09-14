@@ -1,0 +1,25 @@
+{
+    "weights": {
+        "format_mismatch": 15,
+        "trailing_data": 20,
+        "suspicious_structure": 15,
+        "large_metadata": 10,
+        "high_entropy": 10,
+        "lsb_anomaly": 15,
+        "embedded_executable": 25,
+        "suspicious_strings": 10,
+        "file_size_anomaly": 10,
+        "metadata_anomaly": 10,
+        "unusual_chunks": 15,
+        "missing_metadata_all": 5
+    },
+    "severity_thresholds": {
+        "low": 19,
+        "guarded": 39,
+        "review": 59,
+        "high": 79,
+        "critical": 100
+    },
+    "max_score": 100,
+    "description": "StegoShield risk scoring configuration. Weights define the maximum contribution of each indicator. Severity thresholds define score ranges for each risk level."
+}

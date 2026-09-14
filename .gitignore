@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest & Test caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & temporary run artifacts
+logs/*.log
+*.log
+.tempmediaStorage/
+
+# Temporary generated reports & history
+reports/*.json
+reports/*.html
+reports/history.json
+
+# Loose debug screenshots (kept clean in assets/)
+gui_screenshot*.png
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE / Editor configuration
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db

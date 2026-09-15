@@ -1,70 +1,169 @@
 # 🛡️ StegoShield
 
 > **Steganographic Malware Carrier Detection & Static Analysis Suite**  
-> *A defensive cybersecurity research prototype designed for malware analysis, digital forensics, and classroom demonstration.*
+> *A defensive cybersecurity research prototype designed for digital forensics, malware triage, and academic demonstration.*
 
 ---
 
 ## 📸 Interface Preview
 
-### 🏠 Dashboard Overview
+### 🏠 Executive Dashboard
 ![StegoShield Dashboard](assets/dashboard.png)
 
-### 🔍 Threat Analysis & Risk Breakdown
+### 🔍 Threat Scorecard & Static Analysis Breakdown
 ![StegoShield Analysis](assets/analysis_view.png)
 
 ---
 
-## 🎯 Project Overview
+## 🚀 Quick Installation & Setup
 
-Recent cyber threat actors and malware campaigns frequently leverage steganography—embedding malicious executables, encoded commands, or shellcode into innocent-looking image files (`.png`, `.jpg`, `.bmp`).
+### 🐧 Linux (Parrot OS, Kali, Ubuntu, Debian, Mint)
 
-**StegoShield** is a dedicated static analysis framework that inspects media files for steganographic carriers and suspicious payloads **without ever executing or detonating the file**.
+#### ⚡ Option A: Automated 1-Line Setup (Recommended)
+Clone the repository and run the automated installer:
+```bash
+git clone https://github.com/<your-username>/stegoshield.git
+cd stegoshield
+chmod +x install.sh && ./install.sh
+```
 
----
-
-## ✨ Key Features & Analysis Modules
-
-| Module | Purpose | Detection Logic |
-|---|---|---|
-| 🔐 **Cryptographic Hashing** | File Fingerprinting | Computes MD5, SHA-1, SHA-256, SHA-384, SHA-512 |
-| 📋 **Format Validator** | Extension Mismatch | Compares declared file extension against True Magic Bytes |
-| 📊 **Shannon Entropy** | Encrypted/Packed Data | Block-level and file-wide randomness analysis |
-| 📎 **Trailing Data Detection** | Appended Payloads | Detects data past logical `IEND` (PNG) / `EOI` (JPEG) EOF markers |
-| 🔬 **LSB Statistical Analysis** | Pixel Domain Steganography | Chi-Square test, Pair of Values (PoV), inter-channel variance |
-| 🧩 **PNG Chunk Analysis** | Structure Tampering | Inspects critical & ancillary chunks (`tEXt`, `zTXt`, `IDAT`) |
-| 🖼️ **JPEG Marker Inspection** | Structure Verification | Scans COM comments, restart markers, and abnormal segments |
-| 🔤 **Suspicious Strings & URLs** | Heuristic Extraction | Identifies encoded commands (Base64, PowerShell, URLs, IPs) |
-| 🗂️ **Embedded Signatures** | Nested Payloads | Scans for PE headers (`MZ`/`PE`), ZIP/RAR/7z archives, ELF binaries |
-| 🛡️ **Weighted Risk Engine** | Explainable Scoring | Aggregates indicators into an intuitive 0–100 Threat Score |
-| 📄 **Report Generator** | Forensic Output | Exports structured JSON data and styled HTML reports |
+*(This automatically installs system graphics dependencies, creates a virtual environment, installs packages with timeout protection, and launches the app).*
 
 ---
 
-## 🏗️ Architecture
+#### 🛠️ Option B: Manual Step-by-Step Setup
+```bash
+# 1. Install system prerequisites (Qt/OpenGL libraries)
+sudo apt update && sudo apt install -y python3-venv python3-full libgl1 libegl1 libxkbcommon-x11-0 libxcb-cursor0
+
+# 2. Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Install requirements
+pip install -r requirements.txt
+
+# 4. Run StegoShield
+python app.py
+```
+
+---
+
+### 🪟 Windows Setup
+
+```powershell
+# 1. Clone repository
+git clone https://github.com/<your-username>/stegoshield.git
+cd stegoshield
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Launch application
+python app.py
+```
+*(Or double-click `run.bat`)*
+
+---
+
+### 🍎 macOS Setup
+
+```bash
+git clone https://github.com/<your-username>/stegoshield.git
+cd stegoshield
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+
+---
+
+## 💡 Troubleshooting & Common Issues Fixed
+
+### 1. `error: externally-managed-environment` (PEP 668)
+* **Why:** Modern Linux (Parrot, Debian, Ubuntu 23+) blocks global `sudo pip install`.
+* **Fix:** Use a virtual environment:
+  ```bash
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+  ```
+  *Or use the override flag:* `pip install -r requirements.txt --break-system-packages`
+
+---
+
+### 2. `WARNING: Connection timed out while downloading (pyside6)`
+* **Why:** Full PySide6 is ~175 MB and drops on slow networks.
+* **Fix:** We use **`pyside6-essentials`** (~60 MB) which contains all required Qt modules without bulky 3D engines:
+  ```bash
+  pip install --default-timeout=1000 --retries 10 -r requirements.txt
+  ```
+
+---
+
+### 3. `qt.qpa.plugin: Could not find the Qt platform plugin "xcb"`
+* **Why:** Missing Linux X11/XCB display libraries.
+* **Fix:** Run:
+  ```bash
+  sudo apt install -y libxcb-xinerama0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxkbcommon-x11-0
+  ```
+
+---
+
+### 4. Git asking for `Username / Password` or `gnuTLS recv error (-54)`
+* **Why:** The repository is set to **Private**, or terminal timeout occurred.
+* **Fix:** 
+  1. Go to your repo on GitHub ➔ **Settings** ➔ **Danger Zone** ➔ Change visibility to **Public**.
+  2. Or if keeping Private, use a **Personal Access Token (PAT)** instead of account password:
+     ```bash
+     git clone https://<YOUR_TOKEN>@github.com/<username>/stegoshield.git
+     ```
+
+---
+
+## ✨ Features & Detection Engine
+
+| Forensic Module | Detection Capability |
+|---|---|
+| 🔐 **Cryptographic Fingerprinting** | Computes MD5, SHA-1, SHA-256, SHA-384, SHA-512 |
+| 📋 **Magic Byte Format Validator** | Detects extension mismatches and spoofed header bytes |
+| 📊 **Shannon Entropy Engine** | Calculates file-wide and chunk-level randomness for encrypted payloads |
+| 📎 **Trailing Data Detection** | Identifies stealth payloads appended past logical `IEND` (PNG) / `EOI` (JPEG) markers |
+| 🔬 **LSB Statistical Analysis** | Chi-Square Pair-of-Values (PoV) testing & inter-channel variance detection |
+| 🧩 **PNG Chunk Parser** | Inspects ancillary chunks (`tEXt`, `zTXt`, `pHYs`) and IDAT stream abnormalities |
+| 🖼️ **JPEG Marker Parser** | Scans application markers (`APP0`-`APP15`), COM comments, and payload injections |
+| 🔤 **String & URL Heuristics** | Extracts URLs, IP addresses, Base64 patterns, and suspicious command keywords |
+| 🗂️ **Nested Signature Scanner** | Detects embedded PE headers (`MZ`/`PE`), ELF binaries, ZIP/RAR/7z archives |
+| 🛡️ **Weighted Risk Engine** | Computes an intuitive, explainable 0–100 threat score |
+| 📄 **Forensic Reporting** | Generates standalone JSON audit trails and styled HTML reports |
+
+---
+
+## 🏗️ Project Architecture
 
 ```text
 stegoshield/
-├── core/                   # Static analysis & forensic modules
-│   ├── analyzer.py         # Multi-module orchestrator
+├── core/                   # Offline static analysis engine
+│   ├── analyzer.py         # Multi-module pipeline orchestrator
 │   ├── risk_engine.py      # Weighted risk scoring engine
 │   ├── format_validator.py # Magic bytes & header validation
-│   ├── hashing.py          # Cryptographic hashing
+│   ├── hashing.py          # Cryptographic hashing algorithms
 │   ├── entropy.py          # Shannon entropy calculator
 │   ├── trailing_data.py    # EOF trailing byte detector
-│   ├── lsb_analyzer.py     # LSB Chi-Square & statistical analysis
+│   ├── lsb_analyzer.py     # LSB Chi-Square statistical detector
 │   ├── png_analyzer.py     # PNG chunk inspector
 │   ├── jpeg_analyzer.py    # JPEG structure & marker parser
 │   ├── noise_analyzer.py   # Pixel noise & residual analysis
 │   ├── strings.py          # ASCII/Unicode string & URL extractor
-│   ├── embedded_data.py    # Nested executable/archive scanner
-│   ├── metadata.py         # EXIF & metadata analyzer
+│   ├── embedded_data.py    # Embedded executable & archive scanner
+│   ├── metadata.py         # EXIF & image metadata parser
 │   └── report_generator.py # JSON & HTML forensic export
 ├── gui/                    # Modern PySide6 Desktop GUI
 │   ├── theme.py            # Datify Light Visual Identity & Onest typography
 │   ├── main_window.py      # Navigation shell & layout
-│   ├── dashboard.py        # Analytics dashboard
-│   ├── analyze_view.py     # Real-time analysis view & threat scorecard
+│   ├── dashboard.py        # Analytics overview
+│   ├── analyze_view.py     # Real-time analysis view & modern scorecard
 │   ├── compare_view.py     # Side-by-side differential analysis
 │   ├── demo_view.py        # Synthetic test lab
 │   ├── report_view.py      # Report browser
@@ -74,64 +173,51 @@ stegoshield/
 │   └── scoring.json        # Configurable indicator weights & thresholds
 ├── demo/
 │   ├── generate_samples.py # Safe synthetic test carrier generator
-│   └── samples/            # Pre-generated sample images
-├── fonts/                  # Bundled Onest font files
-├── tests/                  # Pytest automated unit test suite (28/28 passing)
+│   └── samples/            # Pre-generated test image cases
+├── fonts/                  # Bundled Onest font family
+├── tests/                  # Pytest unit test suite (28/28 passing)
 ├── assets/                 # Readme screenshots
-├── app.py                  # Main GUI entry point
-├── requirements.txt        # Project dependencies
+├── install.sh              # 1-click Linux installer
+├── run.sh                  # Linux launcher script
+├── run.bat                 # Windows launcher script
+├── app.py                  # Main application entry point
+├── requirements.txt        # Python package dependencies
 └── README.md
 ```
 
 ---
 
-## ⚡ Quick Start
+## 🧪 Automated Unit Testing
 
-### 1. Prerequisites
-- **Python 3.10+** (Tested on Python 3.11)
-- Git
-
-### 2. Clone the Repository
-```bash
-git clone https://github.com/<your-username>/stegoshield.git
-cd stegoshield
-```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Launch Application
-```bash
-python app.py
-```
-
----
-
-## 🧪 Running Automated Tests
-
-Run the test suite with **pytest**:
+Validate all forensic detection modules with **pytest**:
 ```bash
 python -m pytest tests/ -v
 ```
 
-All 28 forensic module tests validate:
-- Format mismatch detection
-- Trailing byte identification
-- LSB statistical detection
-- Embedded binary signature parsing
-- Risk engine scoring calibration
+```text
+tests/test_embedded_data.py    PASSED
+tests/test_entropy.py          PASSED
+tests/test_format_validator.py PASSED
+tests/test_hashing.py          PASSED
+tests/test_lsb.py              PASSED
+tests/test_png.py              PASSED
+tests/test_risk_engine.py      PASSED
+tests/test_strings.py          PASSED
+tests/test_trailing_data.py    PASSED
+
+================ 28 passed in 1.4s ================
+```
 
 ---
 
 ## ⚖️ Ethical & Defensive Scope
 
-- **Purely Defensive**: This tool performs offline static analysis only.
-- **No Payload Execution**: Does **not** execute, unpack, or detonate embedded binaries or scripts.
-- **Educational & Research Focus**: Built for academic study in malware analysis and digital forensics.
+- **100% Defensive**: Performs non-destructive offline static analysis only.
+- **Zero Detonation**: Does **not** execute, unpack, or execute embedded binaries, shellcodes, or scripts.
+- **Research & Academic Focus**: Built strictly for malware analysis, digital forensics, and cybersecurity education.
 
 ---
 
 ## 📄 License
-This project is open-source under the [MIT License](LICENSE).
+
+This project is licensed under the [MIT License](LICENSE).

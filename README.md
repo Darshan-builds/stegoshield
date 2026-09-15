@@ -22,7 +22,7 @@
 #### ⚡ Option A: Automated 1-Line Setup (Recommended)
 Clone the repository and run the automated installer:
 ```bash
-git clone https://github.com/<your-username>/stegoshield.git
+git clone https://github.com/Darshan-builds/stegoshield.git
 cd stegoshield
 chmod +x install.sh && ./install.sh
 ```
@@ -53,7 +53,7 @@ python app.py
 
 ```powershell
 # 1. Clone repository
-git clone https://github.com/<your-username>/stegoshield.git
+git clone https://github.com/Darshan-builds/stegoshield.git
 cd stegoshield
 
 # 2. Install dependencies
@@ -69,7 +69,7 @@ python app.py
 ### 🍎 macOS Setup
 
 ```bash
-git clone https://github.com/<your-username>/stegoshield.git
+git clone https://github.com/Darshan-builds/stegoshield.git
 cd stegoshield
 python3 -m venv venv
 source venv/bin/activate
@@ -117,7 +117,7 @@ python app.py
   1. Go to your repo on GitHub ➔ **Settings** ➔ **Danger Zone** ➔ Change visibility to **Public**.
   2. Or if keeping Private, use a **Personal Access Token (PAT)** instead of account password:
      ```bash
-     git clone https://<YOUR_TOKEN>@github.com/<username>/stegoshield.git
+     git clone https://<YOUR_TOKEN>@github.com/Darshan-builds/stegoshield.git
      ```
 
 ---
